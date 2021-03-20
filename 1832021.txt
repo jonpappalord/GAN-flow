@@ -1,0 +1,9 @@
+2 problemi diversi:
+
+
+-Do alla gan solo NY alle 12 (non importa quindi tesselletion), ogni giorno, e vedo se mi genera cose sensate e vedere come v (Dataset USA nuovo)
+
+
+
+
+-Superpixeling su altri dati (non USA gps), faccio ordinamento di lat e lon e do tutto in pasto alla gan (label adesso è la città, non l'ora). Ovviamente questa cosa, messa su una GAN mi genererà una non città 
