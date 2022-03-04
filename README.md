@@ -82,7 +82,7 @@ Once one have runned all the Analysis notebooks, with all the 4 combination of d
 # DataLoading 
 We provide several notebooks for replicating our ETL (Extraction Transform and Load) phase. All of them are located in the ```DataLoading/``` folder. The first notebook ```DataDownload.ipynb``` contains code for downloading the 4 datasets. Please pay attention to the Chicago's Taxi dataset: these data (referring to years 2018 and 2019) can be updated, so the pre-calculated data we presented in previous sections may not be consistent. Once you have downloaded the data (automatically put in the ```DataLoading/data/```) folder. Once done that, you can execute the four DataLoading notebooks (namely ```DataLoading_BikeCHI```, ```DataLoading_BikeNYC```, ```DataLoading_BikeNYC```, ```DataLoading_TaxiNYC```). These four dataset will transform the raw data into ```TrajectoryDataFrame``` and subsequently into ```FlowDataFrame``` (objects of [scikit-mobility](https://github.com/scikit-mobility/scikit-mobility)) library. The obtained FlowDataFrames are binded to the 64-tesselletion of the zone of analysis of the two cities (see our paper for more details). After that, the FlowDataFrame are casted into 64x64 weighted adjacency matrices (a.k.a. mobility networks) and are placed into the 
 ```adj``` folder. As an example in the next image you can find a visualization of the process carryied out for the Bike of Manhattan dataset.
-![alt text](https://github.com/[jonpappalord]/[GAN-flow]/blob/[main]/dataload.png?raw=true)
+![data_schema](https://github.com/jonpappalord/GAN-flow/blob/main/dataload.png?raw=true)
 
 
 
