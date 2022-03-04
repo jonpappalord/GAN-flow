@@ -1,7 +1,5 @@
 # MoGAN - Generating mobility networs with GANs
----
 ## Table of contents
----
 1. [Citing](#citing)
 2. [Abstract](#abstract)
 3. [Data Availability](#data-availability)
@@ -31,7 +29,7 @@ Here, we address mobility network generation, i.e., generating a city's entire m
 Our solution is MoGAN, a model based on Generative Adversarial Networks (GANs) to generate realistic mobility networks.
 We conduct extensive experiments on public datasets of bike and taxi rides to show that MoGAN outperforms the classical Gravity and Radiation models regarding the realism of the generated networks.
 Our model can be used for data augmentation and performing simulations and what-if analysis.
----
+
 # Data Availability
 All of the four used dataset are openly available online. Please, if you want to download these files use the scripts we will present in folowing sections. Otherwise select referring to years 2018 and 2019. 
 - Data for New York City bike sharing system ("BikeNYC" hereinafter) may be found at: https://s3.amazonaws.com/tripdata/index.html
@@ -44,7 +42,7 @@ All of the four used dataset are openly available online. Please, if you want to
         - 2019: https://data.cityofchicago.org/Transportation/Taxi-Trips-2019/h4cq-z3dy 
     2. **Warning** These data are updated frequently. The current data are different from the ones used in our analysis 
 
----
+
 # Structure of the repository
 In the **main** level of the repo you can find:
 - ```Gravity.py``` and ``` Radiation.py```
@@ -73,14 +71,14 @@ python MoGAN.py -CHI -Taxi
 These script will train MoGAN or the two baseline models over the pre-calculated adjacency matrices you can find in ```adj/``` folder. And will save the results in the folder of each dataset (we also leave the pre-calculated results). After that it is possible to perform the [Analysis](#analysis) phase. Otherwise, if you want to reconstruct the adjacency matrix, you may want to perform the [DataLoading](#dataloading) phase.
 
     
----
+
 # Analysis 
 As reported in the article, we perform a massive experimental phase, implementing a tailored approach for evaluating the realism of the synthetic networks. For easiness of usage, we created three different Jupyter Notebook ( ```AnalysisMoGAN ```,  ``` AnalysisGravity``` and  ```AnalysisRadiation ```), one for each model, for creating, per each model, the distributions of Mixed, Syntetic and Test Set, over the four datasets (see our article for more details). If you want to run these experiments, execute all the cells of the notebooks. Please note that the second cell of the notebook contain two parameter, one specifying the city and one the mean of transport, for selecting the dataset (the syntax is the same as above i.e. CHI/NYC and Bike/Taxi). The results of the Analysis notebook will be stored in the folder of the desired dataset under the subfolder ```experiments/```. For easiness of use, we leave the results file pre-calculated.
 Once one have runned all the Analysis notebooks, with all the 4 combination of data sets, it is possible to run the ```Plots.ipynb``` notebook, that replicate the analysis reported in the article i.e. the weight/weight-distance distribution, and the Cut Norm, CPC and RMSE distribution.
 
----
+
 # DataLoading 
-We provide several notebooks for replicating our ETL (Extraction Transform and Load) phase. All of them are located in the ```DataLoading/``` folder. The first notebook ```DataDownload.ipynb``` contains code for downloading the 4 datasets. Please pay attention to the Chicago's Taxi dataset: these data (referring to years 2018 and 2019) can be updated, so the pre-calculated data we presented in previous sections may not be consistent. Once you have downloaded the data (automatically put in the ```DataLoading/data/```) folder. Once done that, you can execute the four DataLoading notebooks (namely ```DataLoading_BikeCHI```, ```DataLoading_BikeNYC```, ```DataLoading_BikeNYC```, ```DataLoading_TaxiNYC```). These four dataset will transform the raw data into ```TrajectoryDataFrame``` and subsequently into ```FlowDataFrame``` (objects of [scikit-mobility](https://github.com/scikit-mobility/scikit-mobility)) library. The obtained FlowDataFrames are binded to the 64-tesselletion of the zone of analysis of the two cities (see our paper for more details). After that, the FlowDataFrame are casted into 64x64 weighted adjacency matrices (a.k.a. mobility networks) and are placed into the 
+We provide several notebooks for replicating our ETL (Extraction Transform and Load) phase. All of them are located in the ```DataLoading/``` folder. The first notebook ```DataDownload.ipynb``` contains code for downloading the 4 datasets. Please pay attention to the Chicago's Taxi dataset: these data (referring to years 2018 and 2019) can be updated, so the pre-calculated data we presented in previous sections may not be consistent. Once you have downloaded the data (automatically put in the ```DataLoading/data/```) folder. Once done that, you can execute the four DataLoading notebooks (namely ```DataLoading_BikeCHI```, ```DataLoading_BikeNYC```, ```DataLoading_BikeNYC```, ```DataLoading_TaxiNYC```). These four dataset will transform the raw data into ```TrajectoryDataFrame``` and subsequently into ```FlowDataFrame``` (objects of [scikit-mobility](https://github.com/scikit-mobility/scikit-mobility)) library. The obtained FlowDataFrames are binded to the 64-tesselletion of the zone of analysis of the two cities (see our paper for more details) and saved into the ```Filtered/``` folder. After that, the FlowDataFrames are casted into 64x64 weighted adjacency matrices (a.k.a. mobility networks) and are placed into the 
 ```adj``` folder. As an example in the next image you can find a visualization of the process carryied out for the Bike of Manhattan dataset.
 ![data_schema](https://github.com/jonpappalord/GAN-flow/blob/main/dataload.png?raw=true)
 
