@@ -30,6 +30,10 @@ Our solution is MoGAN, a model based on Generative Adversarial Networks (GANs) t
 We conduct extensive experiments on public datasets of bike and taxi rides to show that MoGAN outperforms the classical Gravity and Radiation models regarding the realism of the generated networks.
 Our model can be used for data augmentation and performing simulations and what-if analysis.
 
+![data_schema](https://github.com/jonpappalord/GAN-flow/blob/main/gan_schema.png?raw=true)
+
+
+
 # Data Availability
 All of the four used dataset are openly available online. Please, if you want to download these files use the scripts we will present in folowing sections. Otherwise select referring to years 2018 and 2019. 
 - Data for New York City bike sharing system ("BikeNYC" hereinafter) may be found at: https://s3.amazonaws.com/tripdata/index.html
