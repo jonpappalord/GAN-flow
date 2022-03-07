@@ -1,7 +1,7 @@
 # MoGAN - Generating mobility networs with GANs
 ## Table of contents
 1. [Citing](#citing)
-2. [Libraries](#libraries)
+2. [Packages](#packages)
 3. [Abstract](#abstract)
 4. [Data Availability](#data-availability)
 5. [Structure of the repository](#structure-of-the-repository)
@@ -24,7 +24,7 @@ If you use the code in this repository, please cite our paper:
 }
 ```
 
-# Libraries
+# Packages
 For running notebooks and scripts of this project you must install the following Python packages:
 ```
   pytorch
@@ -33,7 +33,7 @@ For running notebooks and scripts of this project you must install the following
   seaborn
   cutnorm
 ```
-These packages will automatically install all of the other required ones (e.g ```matplotilib```, ```geopandas```, ```scipy```).
+These packages will automatically install all of the other required ones (e.g ```matplotilib```, ```geopandas```, ```scipy```, ```numpy```).
 
 
 # Abstract
