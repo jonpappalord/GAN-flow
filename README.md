@@ -1,11 +1,12 @@
 # MoGAN - Generating mobility networs with GANs
 ## Table of contents
 1. [Citing](#citing)
-2. [Abstract](#abstract)
-3. [Data Availability](#data-availability)
-4. [Structure of the repository](#structure-of-the-repository)
-5. [Analysis](#analysis)
-6. [DataLoading](#dataloading)
+2. [Libraries] (#libraries)
+3. [Abstract](#abstract)
+4. [Data Availability](#data-availability)
+5. [Structure of the repository](#structure-of-the-repository)
+6. [Analysis](#analysis)
+7. [DataLoading](#dataloading)
 
 
 # Citing
@@ -22,6 +23,18 @@ If you use the code in this repository, please cite our paper:
   year={2022}
 }
 ```
+
+# Libraries
+For running notebooks and scripts of this project you must install the following Python packages:
+```
+  pytorch
+  torchvision
+  scikit-mobility
+  seaborn
+  cutnorm
+```
+These packages will automatically install all of the other required ones (e.g ```matplotilib```, ```geopandas```, ```scipy```).
+
 
 # Abstract
 The increasingly crucial role of human displacements in complex societal phenomena, such as traffic congestion, segregation, and the diffusion of epidemics, is attracting the interest of scientists from several disciplines.
