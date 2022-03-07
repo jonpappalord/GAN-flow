@@ -1,7 +1,7 @@
 # MoGAN - Generating mobility networs with GANs
 ## Table of contents
 1. [Citing](#citing)
-2. [Libraries] (#libraries)
+2. [Libraries](#libraries)
 3. [Abstract](#abstract)
 4. [Data Availability](#data-availability)
 5. [Structure of the repository](#structure-of-the-repository)
