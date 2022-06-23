@@ -63,6 +63,11 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
         if method == "cpc":
             misura =  evaluation.common_part_of_commuters
         elif method == "rmse":
+            for pair in insieme:
+                print(pair[0])
+                print("-----")
+                print(pair[1])
+                break
             misura = evaluation.rmse
         for pair in insieme:
             weights_1 = (pair[0]).flatten()
