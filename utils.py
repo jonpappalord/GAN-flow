@@ -51,23 +51,22 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
         insieme = lista
     else:
         insieme = itertools.combinations(lista, r =2)
-        
+    
+
     if method =="cutnorm":
+        k = 0
         for pair in insieme:    
+                if k%100==0:
+                    print(k)
                 _, cutn_sdp, _ = compute_cutnorm(pair[0], pair[1])
                 exp.append(cutn_sdp)
-
+                k+=1
         return exp
     
     else:
         if method == "cpc":
             misura =  evaluation.common_part_of_commuters
         elif method == "rmse":
-            for pair in insieme:
-                print(pair[0])
-                print("-----")
-                print(pair[1])
-                break
             misura = evaluation.rmse
         for pair in insieme:
             weights_1 = (pair[0]).flatten()
