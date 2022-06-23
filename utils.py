@@ -67,6 +67,9 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
         for pair in insieme:
             weights_1 = (pair[0]).flatten()
             weights_2 = (pair[1]).flatten()
+            if method =="rmse":
+                weights_1 = weights_1/np.linalg.norm(weights_1)
+                weights_2 = weights_2/np.linalg.norm(weights_2)
             m = misura(weights_1, weights_2)
             exp.append(m)
         return exp
