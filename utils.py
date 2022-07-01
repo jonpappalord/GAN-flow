@@ -9,7 +9,15 @@ from cutnorm import compute_cutnorm
 import skmob
 from skmob.measures import evaluation
 
+from grakel.utils import graph_from_networkx
+from grakel.kernels import EdgeHistogram
 
+import networkx as nx
+from tqdm import tqdm
+
+
+import random
+random.seed(3110)
 
 def get_exp_dist(lista, paired = False, method = "weight-edge", distanze = None):
     
@@ -76,6 +84,39 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 weights_2 = weights_2/np.linalg.norm(weights_2)
             m = misura(weights_1, weights_2)
             exp.append(m)
+        return exp
+    
+    
+def get_exp_kernel(insieme, paired = False):
+    
+    if not paired:
+        l = []
+        for A in insieme:
+            G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
+            l.append(G)
+
+        G = graph_from_networkx(l,edge_labels_tag="weight")
+
+        gk = EdgeHistogram(normalize=True)
+        K_train = gk.fit_transform(G)
+
+        exp = K_train[np.triu_indices(K_train.shape[0], k=1)]
+
+        return exp
+    
+    else: #pairwise comparison, take only one value
+        exp = []
+        for pair in tqdm(insieme):
+            l = []
+            G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
+            G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
+            l.append(G1)
+            l.append(G2)
+            G = graph_from_networkx(l,edge_labels_tag="weight")
+            gk = EdgeHistogram(normalize=True)
+            K_train = gk.fit_transform(G)
+            sim = K_train[0,1]
+            exp.append(sim)
         return exp
     
 if __name__ == "__main__":
