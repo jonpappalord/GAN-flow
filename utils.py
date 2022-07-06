@@ -98,9 +98,18 @@ def get_exp_kernel(insieme, paired = False):
             G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
             l.append(G)
 
-        G = graph_from_networkx(l,edge_labels_tag="weight")
+        for g in l:
+            for n in g.nodes():
+                for i in nx.ego_graph(g,n).nodes():
+                    w = 0
+                    if g.has_edge(n,i):
+                        w = w + g.edges()[(n,i)]["weight"]
+                    g.nodes()[n]["w"] = w
 
-        gk = EdgeHistogram(normalize=True)
+        G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
+
+
+        gk = kk()
         K_train = gk.fit_transform(G)
 
         exp = K_train[np.triu_indices(K_train.shape[0], k=1)]
@@ -111,6 +120,7 @@ def get_exp_kernel(insieme, paired = False):
         exp = []
         for pair in tqdm(insieme):
             l = []
+            
             G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
             G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
             l.append(G1)
@@ -126,7 +136,7 @@ def get_exp_kernel(insieme, paired = False):
 
             G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
-            gk = kk(normalize=True)
+            gk = kk()
             K_train = gk.fit_transform(G)
             sim = K_train[0,1]
             exp.append(sim)
