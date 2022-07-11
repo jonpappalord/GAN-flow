@@ -7,20 +7,35 @@ from random import sample
 import pickle
 from scipy.spatial import distance
 import time
+import sys
 
 import random
 random.seed(3110)
 
 
-cities = ["CHI", "NYC"]
-transps = ["Bike", "Taxi"]
-models = ["Gravity", "Radiation", "Random", "Random_Weighted", "MoGAN"]
 
-'''
-cities = ["CHI"]
-transps = ["Bike"]
-models = ["Random"]
-'''
+print(len(sys.argv))
+
+
+
+
+
+if len(sys.argv) == 1: #no arguments
+    cities = ["CHI", "NYC"]
+    transps = ["Bike", "Taxi"]
+    models = ["Gravity", "Radiation", "Random", "Random_Weighted", "MoGAN"]
+    '''
+    cities = ["CHI"]
+    transps = ["Bike"]
+    models = ["Random"]
+    '''
+
+else:
+    cities = [sys.argv[1]]
+    transps = [sys.argv[2]]
+    models = ["Gravity", "Radiation", "Random", "Random_Weighted", "MoGAN"]
+
+
 
 FLAG_weights = False
 FLAG_weights_dist = False
@@ -145,21 +160,21 @@ for model in models:
                 end = time.time()
                 print("exp_kernel_1_sim")
                 elapsed_time = (end-start)%60
-                #print("elapsed time in minutes: " + str(elapsed_time))
+                print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
                 exp_kernel_2_sim = get_exp_kernel(fake_set)
                 end = time.time()
                 print("exp_kernel_2_sim")
                 elapsed_time = (end-start)%60
-                #print("elapsed time in minutes: " + str(elapsed_time))
+                print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
                 exp_kernel_3_sim = get_exp_kernel(mixed_set_pairs, paired = True)
                 end = time.time()
                 print("exp_kernel_3_sim")
                 elapsed_time = (end-start)%60
-                #print("elapsed time in minutes: " + str(elapsed_time))
+                print("elapsed time in minutes: " + str(elapsed_time))
 
 
                 with open("./" + transp+city+"/experiments/kernel/"+model+"/1.txt", "wb") as fp:   #Pickling

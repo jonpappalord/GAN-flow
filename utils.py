@@ -16,8 +16,8 @@ from grakel.kernels import RandomWalkLabeled as kk
 import networkx as nx
 from tqdm import tqdm
 
-import warnings
-warnings.filterwarnings("ignore")
+#import warnings
+#warnings.filterwarnings("ignore")
 
 import random
 random.seed(3110)
@@ -110,6 +110,7 @@ def get_exp_kernel(insieme, paired = False):
 
 
         gk = kk()
+        print("train")
         K_train = gk.fit_transform(G)
 
         exp = K_train[np.triu_indices(K_train.shape[0], k=1)]
@@ -120,7 +121,7 @@ def get_exp_kernel(insieme, paired = False):
         exp = []
         for pair in tqdm(insieme):
             l = []
-            
+
             G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
             G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
             l.append(G1)
