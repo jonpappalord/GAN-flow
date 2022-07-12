@@ -33,7 +33,7 @@ if len(sys.argv) == 1: #no arguments
 else:
     cities = [sys.argv[1]]
     transps = [sys.argv[2]]
-    models = ["Gravity", "Radiation", "Random", "Random_Weighted", "MoGAN"]
+    models = ["Gravity", "Radiation", "MoGAN", "Random", "Random_Weighted"]
 
 
 
@@ -44,8 +44,6 @@ FLAG_rmse = False
 FLAG_cutnorm = False
 FLAG_kernel = False
 FLAG_topo = True
-
-
 
 table = {
     "Gravity": "fake_set_gravity.txt",
@@ -202,7 +200,6 @@ for model in models:
                     pickle.dump(exp_topo_2_sim, fp)
                 with open("./" + transp+city+"/experiments/topo/"+model+"/3.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_topo_3_sim, fp)
-
 
 if __name__ == "__main__":
     pass
