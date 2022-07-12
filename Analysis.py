@@ -33,7 +33,7 @@ if len(sys.argv) == 1: #no arguments
 else:
     cities = [sys.argv[1]]
     transps = [sys.argv[2]]
-    models = ["Gravity", "Radiation", "Random", "Random_Weighted", "MoGAN"]
+    models = ["Gravity", "Radiation", "MoGAN", "Random", "Random_Weighted"]
 
 
 
@@ -159,21 +159,21 @@ for model in models:
                 exp_kernel_1_sim = get_exp_kernel(v_test)
                 end = time.time()
                 print("exp_kernel_1_sim")
-                elapsed_time = (end-start)%60
+                elapsed_time = (end-start)/60
                 print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
                 exp_kernel_2_sim = get_exp_kernel(fake_set)
                 end = time.time()
                 print("exp_kernel_2_sim")
-                elapsed_time = (end-start)%60
+                elapsed_time = (end-start)/60
                 print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
                 exp_kernel_3_sim = get_exp_kernel(mixed_set_pairs, paired = True)
                 end = time.time()
                 print("exp_kernel_3_sim")
-                elapsed_time = (end-start)%60
+                elapsed_time = (end-start)/60
                 print("elapsed time in minutes: " + str(elapsed_time))
 
 
