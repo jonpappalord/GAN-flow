@@ -7,27 +7,45 @@ from random import sample
 import pickle
 from scipy.spatial import distance
 import time
+import sys
 
 import random
 random.seed(3110)
 
 
-cities = ["CHI", "NYC"]
-transps = ["Bike", "Taxi"]
-models = ["Gravity", "Radiation", "Random", "Random_Weighted", "MoGAN"]
 
-'''
-cities = ["CHI"]
-transps = ["Bike"]
-models = ["Random"]
-'''
+print(len(sys.argv))
+
+
+
+
+
+if len(sys.argv) == 1: #no arguments
+    cities = ["CHI", "NYC"]
+    transps = ["Bike", "Taxi"]
+    models = ["Gravity", "Radiation", "Random", "Random_Weighted", "MoGAN"]
+    '''
+    cities = ["CHI"]
+    transps = ["Bike"]
+    models = ["Random"]
+    '''
+
+else:
+    cities = [sys.argv[1]]
+    transps = [sys.argv[2]]
+    models = ["Gravity", "Radiation", "Random", "Random_Weighted", "MoGAN"]
+
+
 
 FLAG_weights = False
 FLAG_weights_dist = False
 FLAG_cpc = False
 FLAG_rmse = False
 FLAG_cutnorm = False
-FLAG_kernel = True
+FLAG_kernel = False
+FLAG_topo = True
+
+
 
 table = {
     "Gravity": "fake_set_gravity.txt",
@@ -144,22 +162,22 @@ for model in models:
                 exp_kernel_1_sim = get_exp_kernel(v_test)
                 end = time.time()
                 print("exp_kernel_1_sim")
-                elapsed_time = (end-start)%60
-                #print("elapsed time in minutes: " + str(elapsed_time))
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
                 exp_kernel_2_sim = get_exp_kernel(fake_set)
                 end = time.time()
                 print("exp_kernel_2_sim")
-                elapsed_time = (end-start)%60
-                #print("elapsed time in minutes: " + str(elapsed_time))
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
                 exp_kernel_3_sim = get_exp_kernel(mixed_set_pairs, paired = True)
                 end = time.time()
                 print("exp_kernel_3_sim")
-                elapsed_time = (end-start)%60
-                #print("elapsed time in minutes: " + str(elapsed_time))
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
 
 
                 with open("./" + transp+city+"/experiments/kernel/"+model+"/1.txt", "wb") as fp:   #Pickling
@@ -168,6 +186,23 @@ for model in models:
                     pickle.dump(exp_kernel_2_sim, fp)
                 with open("./" + transp+city+"/experiments/kernel/"+model+"/3.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_kernel_3_sim, fp)
+                    
+            if FLAG_topo:
+                exp_topo_1_sim = get_exp_measures(v_test, method = "topo")
+                print("exp_topo_1_sim")
+                exp_topo_2_sim = get_exp_measures(fake_set, method = "topo")
+                print("exp_topo_2_sim")
+                exp_topo_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="topo")
+                print("exp_topo_3_sim")
+                
+
+                with open("./" + transp+city+"/experiments/topo/"+model+"/1.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_topo_1_sim, fp)
+                with open("./" + transp+city+"/experiments/topo/"+model+"/2.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_topo_2_sim, fp)
+                with open("./" + transp+city+"/experiments/topo/"+model+"/3.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_topo_3_sim, fp)
+
 
 if __name__ == "__main__":
     pass
