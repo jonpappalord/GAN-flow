@@ -63,7 +63,6 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
     else:
         insieme = itertools.combinations(lista, r =2)
 
-
     if method =="cutnorm":
         k = 0
         for pair in insieme:
@@ -73,10 +72,12 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 exp.append(cutn_sdp)
                 k+=1
         return exp
-    
+
     elif method == "topo":
             exp = []
+
             for pair in tqdm(insieme):
+
                 G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 cl1 = list(nx.clustering(G1,weight='weight').values())
