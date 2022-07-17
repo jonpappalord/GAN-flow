@@ -23,7 +23,7 @@ print(len(sys.argv))
 if len(sys.argv) == 1: #no arguments
     cities = ["CHI", "NYC"]
     transps = ["Bike", "Taxi"]
-    models = ["Gravity", "Radiation", "Random", "Random_Weighted", "MoGAN"]
+    models = ["Gravity", "Radiation", "MoGAN", "Random", "Random_Weighted"]
     '''
     cities = ["CHI"]
     transps = ["Bike"]
@@ -33,8 +33,12 @@ if len(sys.argv) == 1: #no arguments
 else:
     cities = [sys.argv[1]]
     transps = [sys.argv[2]]
-    models = ["Gravity", "Radiation", "MoGAN", "Random", "Random_Weighted"]
+    if sys.argv[3] == "all":
+        models = ["Gravity", "Radiation", "MoGAN"]
+    else:
+        models = sys.argv[3:]
 
+print(models)
 
 
 FLAG_weights = False
@@ -42,8 +46,23 @@ FLAG_weights_dist = False
 FLAG_cpc = False
 FLAG_rmse = False
 FLAG_cutnorm = False
+
 FLAG_kernel = False
-FLAG_topo = True
+
+FLAG_topo = False
+FLAG_topo_unweighted = False
+
+FLAG_degree = True
+FLAG_degree_unweighted = True
+
+FLAG_outdegree = True
+FLAG_outdegree_unweighted = True
+
+FLAG_indegree = True
+FLAG_indegree_unweighted = True
+
+
+
 
 table = {
     "Gravity": "fake_set_gravity.txt",
@@ -184,15 +203,29 @@ for model in models:
                     pickle.dump(exp_kernel_2_sim, fp)
                 with open("./" + transp+city+"/experiments/kernel/"+model+"/3.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_kernel_3_sim, fp)
-                    
+
             if FLAG_topo:
+                start = time.time()
                 exp_topo_1_sim = get_exp_measures(v_test, method = "topo")
                 print("exp_topo_1_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
                 exp_topo_2_sim = get_exp_measures(fake_set, method = "topo")
                 print("exp_topo_2_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
                 exp_topo_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="topo")
                 print("exp_topo_3_sim")
-                
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
 
                 with open("./" + transp+city+"/experiments/topo/"+model+"/1.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_topo_1_sim, fp)
@@ -201,5 +234,226 @@ for model in models:
                 with open("./" + transp+city+"/experiments/topo/"+model+"/3.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_topo_3_sim, fp)
 
+                    
+                    
+            if FLAG_topo_unweighted:
+                start = time.time()
+                exp_topo_unweighted_1_sim = get_exp_measures(v_test, method = "topo_unweighted")
+                print("exp_topo_unweighted_1_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_topo_unweighted_2_sim = get_exp_measures(fake_set, method = "topo_unweighted")
+                print("exp_topo_unweighted_2_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_topo_unweighted_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="topo_unweighted")
+                print("exp_topo_unweighted_3_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+
+                with open("./" + transp+city+"/experiments/topo_unweighted/"+model+"/1.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_topo_unweighted_1_sim, fp)
+                with open("./" + transp+city+"/experiments/topo_unweighted/"+model+"/2.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_topo_unweighted_2_sim, fp)
+                with open("./" + transp+city+"/experiments/topo_unweighted/"+model+"/3.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_topo_unweighted_3_sim, fp)      
+                    
+            if FLAG_degree:
+                start = time.time()
+                exp_degree_1_sim = get_exp_measures(v_test, method = "degree")
+                print("exp_degree_1_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_degree_2_sim = get_exp_measures(fake_set, method = "degree")
+                print("exp_degree_2_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_degree_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="degree")
+                print("exp_degree_3_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+
+                with open("./" + transp+city+"/experiments/degree/"+model+"/1.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_degree_1_sim, fp)
+                with open("./" + transp+city+"/experiments/degree/"+model+"/2.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_degree_2_sim, fp)
+                with open("./" + transp+city+"/experiments/degree/"+model+"/3.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_degree_3_sim, fp)
+
+
+
+            if FLAG_degree_unweighted:
+                start = time.time()
+                exp_degree_unweighted_1_sim = get_exp_measures(v_test, method = "degree_unweighted")
+                print("exp_degree_unweighted_1_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_degree_unweighted_2_sim = get_exp_measures(fake_set, method = "degree_unweighted")
+                print("exp_degree_unweighted_2_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_degree_unweighted_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="degree_unweighted")
+                print("exp_degree_unweighted_3_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+
+                with open("./" + transp+city+"/experiments/degree_unweighted/"+model+"/1.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_degree_unweighted_1_sim, fp)
+                with open("./" + transp+city+"/experiments/degree_unweighted/"+model+"/2.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_degree_unweighted_2_sim, fp)
+                with open("./" + transp+city+"/experiments/degree_unweighted/"+model+"/3.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_degree_unweighted_3_sim, fp)  
+
+
+            if FLAG_indegree:
+                start = time.time()
+                exp_indegree_1_sim = get_exp_measures(v_test, method = "indegree")
+                print("exp_indegree_1_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_indegree_2_sim = get_exp_measures(fake_set, method = "indegree")
+                print("exp_indegree_2_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_indegree_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="indegree")
+                print("exp_indegree_3_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+
+                with open("./" + transp+city+"/experiments/indegree/"+model+"/1.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_indegree_1_sim, fp)
+                with open("./" + transp+city+"/experiments/indegree/"+model+"/2.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_indegree_2_sim, fp)
+                with open("./" + transp+city+"/experiments/indegree/"+model+"/3.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_indegree_3_sim, fp)
+
+
+
+            if FLAG_indegree_unweighted:
+                start = time.time()
+                exp_indegree_unweighted_1_sim = get_exp_measures(v_test, method = "indegree_unweighted")
+                print("exp_indegree_unweighted_1_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_indegree_unweighted_2_sim = get_exp_measures(fake_set, method = "indegree_unweighted")
+                print("exp_indegree_unweighted_2_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_indegree_unweighted_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="indegree_unweighted")
+                print("exp_indegree_unweighted_3_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+
+                with open("./" + transp+city+"/experiments/indegree_unweighted/"+model+"/1.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_indegree_unweighted_1_sim, fp)
+                with open("./" + transp+city+"/experiments/indegree_unweighted/"+model+"/2.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_indegree_unweighted_2_sim, fp)
+                with open("./" + transp+city+"/experiments/indegree_unweighted/"+model+"/3.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_indegree_unweighted_3_sim, fp)                      
+
+
+            if FLAG_outdegree:
+                start = time.time()
+                exp_outdegree_1_sim = get_exp_measures(v_test, method = "outdegree")
+                print("exp_outdegree_1_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_outdegree_2_sim = get_exp_measures(fake_set, method = "outdegree")
+                print("exp_outdegree_2_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_outdegree_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="outdegree")
+                print("exp_outdegree_3_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+
+                with open("./" + transp+city+"/experiments/outdegree/"+model+"/1.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_outdegree_1_sim, fp)
+                with open("./" + transp+city+"/experiments/outdegree/"+model+"/2.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_outdegree_2_sim, fp)
+                with open("./" + transp+city+"/experiments/outdegree/"+model+"/3.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_outdegree_3_sim, fp)
+
+
+
+            if FLAG_outdegree_unweighted:
+                start = time.time()
+                exp_outdegree_unweighted_1_sim = get_exp_measures(v_test, method = "outdegree_unweighted")
+                print("exp_outdegree_unweighted_1_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_outdegree_unweighted_2_sim = get_exp_measures(fake_set, method = "outdegree_unweighted")
+                print("exp_outdegree_unweighted_2_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_outdegree_unweighted_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="outdegree_unweighted")
+                print("exp_outdegree_unweighted_3_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+
+                with open("./" + transp+city+"/experiments/outdegree_unweighted/"+model+"/1.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_outdegree_unweighted_1_sim, fp)
+                with open("./" + transp+city+"/experiments/outdegree_unweighted/"+model+"/2.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_outdegree_unweighted_2_sim, fp)
+                with open("./" + transp+city+"/experiments/outdegree_unweighted/"+model+"/3.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_outdegree_unweighted_3_sim, fp)  
+
+                    
 if __name__ == "__main__":
     pass
