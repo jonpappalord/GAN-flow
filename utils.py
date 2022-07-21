@@ -10,7 +10,6 @@ import skmob
 from skmob.measures import evaluation
 
 from grakel.utils import graph_from_networkx
-from grakel.kernels import EdgeHistogram
 from grakel.kernels import OddSth as kk
 
 import networkx as nx

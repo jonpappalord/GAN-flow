@@ -10,7 +10,6 @@ import skmob
 from skmob.measures import evaluation
 
 from grakel.utils import graph_from_networkx
-from grakel.kernels import EdgeHistogram
 from grakel.kernels import OddSth as kk
 
 import networkx as nx
@@ -86,7 +85,7 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 cl2 = cl2/np.linalg.norm(cl2)
                 exp.append(evaluation.rmse(cl1,cl2))
             return exp
-        
+
     elif method == "topo_unweighted":
             exp = []
 
@@ -99,7 +98,7 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 cl2 = cl2/np.linalg.norm(cl2)
                 exp.append(evaluation.rmse(cl1,cl2))
             return exp
-        
+
     elif method == "degree":
             exp = []
 
@@ -107,12 +106,12 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.degree(weight = "weight")]
-                deg2 = [val for (node, val) in G2.degree(weight = "weight")]                
+                deg2 = [val for (node, val) in G2.degree(weight = "weight")]
                 deg1 = deg1/np.linalg.norm(deg1)
                 deg2 = deg2/np.linalg.norm(deg2)
                 exp.append(evaluation.rmse(deg1,deg2))
-            return exp 
-     
+            return exp
+
     elif method == "degree_unweighted":
             exp = []
 
@@ -120,13 +119,13 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.degree()]
-                deg2 = [val for (node, val) in G2.degree()]                
+                deg2 = [val for (node, val) in G2.degree()]
                 deg1 = deg1/np.linalg.norm(deg1)
                 deg2 = deg2/np.linalg.norm(deg2)
                 exp.append(evaluation.rmse(deg1,deg2))
-            return exp 
-    
-    
+            return exp
+
+
     elif method == "indegree":
             exp = []
 
@@ -134,12 +133,12 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.in_degree(weight = "weight")]
-                deg2 = [val for (node, val) in G2.in_degree(weight = "weight")]                
+                deg2 = [val for (node, val) in G2.in_degree(weight = "weight")]
                 deg1 = deg1/np.linalg.norm(deg1)
                 deg2 = deg2/np.linalg.norm(deg2)
                 exp.append(evaluation.rmse(deg1,deg2))
-            return exp 
-     
+            return exp
+
     elif method == "indegree_unweighted":
             exp = []
 
@@ -147,12 +146,12 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.in_degree()]
-                deg2 = [val for (node, val) in G2.in_degree()]                
+                deg2 = [val for (node, val) in G2.in_degree()]
                 deg1 = deg1/np.linalg.norm(deg1)
                 deg2 = deg2/np.linalg.norm(deg2)
                 exp.append(evaluation.rmse(deg1,deg2))
-            return exp     
-        
+            return exp
+
     elif method == "outdegree":
             exp = []
 
@@ -160,12 +159,12 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.out_degree(weight = "weight")]
-                deg2 = [val for (node, val) in G2.out_degree(weight = "weight")]                
+                deg2 = [val for (node, val) in G2.out_degree(weight = "weight")]
                 deg1 = deg1/np.linalg.norm(deg1)
                 deg2 = deg2/np.linalg.norm(deg2)
                 exp.append(evaluation.rmse(deg1,deg2))
-            return exp 
-     
+            return exp
+
     elif method == "outdegree_unweighted":
             exp = []
 
@@ -173,13 +172,13 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.out_degree()]
-                deg2 = [val for (node, val) in G2.out_degree()]                
+                deg2 = [val for (node, val) in G2.out_degree()]
                 deg1 = deg1/np.linalg.norm(deg1)
                 deg2 = deg2/np.linalg.norm(deg2)
                 exp.append(evaluation.rmse(deg1,deg2))
-            return exp 
-    
-    
+            return exp
+
+
     else:
         if method == "cpc":
             misura =  evaluation.common_part_of_commuters
@@ -215,7 +214,7 @@ def get_exp_kernel(insieme, paired = False):
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
 
-        gk = kk()
+        gk = kk(normalize = True)
         print("train")
         K_train = gk.fit_transform(G)
 
@@ -243,7 +242,7 @@ def get_exp_kernel(insieme, paired = False):
 
             G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
-            gk = kk()
+            gk = kk(normalize = True)
             K_train = gk.fit_transform(G)
             sim = K_train[0,1]
             exp.append(sim)
