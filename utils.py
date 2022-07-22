@@ -10,7 +10,8 @@ import skmob
 from skmob.measures import evaluation
 
 from grakel.utils import graph_from_networkx
-from grakel.kernels import OddSth as kk
+#from grakel.kernels import OddSth as kk
+from grakel.kernels import RandomWalkLabeled as kk
 
 import networkx as nx
 from tqdm import tqdm
@@ -208,6 +209,7 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
         for A in insieme:
             G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
             l.append(G)
+
 
         for g in l:
             for n in g.nodes():
