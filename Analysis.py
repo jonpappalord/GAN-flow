@@ -36,7 +36,7 @@ else:
     if sys.argv[3] == "all":
         models = ["Gravity", "Radiation", "MoGAN"]
     elif sys.argv[3] == "all+R":
-        models = ["Gravity", "Radiation", "MoGAN", "Random", "Random_Weighted"]
+        models = ["Gravity", "Radiation", "MoGAN", "Random_Weighted"]
     else:
         models = sys.argv[3:]
 
@@ -46,22 +46,22 @@ print(models)
 FLAG_weights = False
 FLAG_weights_dist = False
 FLAG_cpc = False
-FLAG_rmse = False
+FLAG_rmse = True
 FLAG_cutnorm = False
 
-FLAG_kernel = True
+FLAG_kernel = False
 
 FLAG_topo = False
 FLAG_topo_unweighted = False
 
-FLAG_degree = False
-FLAG_degree_unweighted = False
+FLAG_degree = True
+FLAG_degree_unweighted = True
 
-FLAG_outdegree = False
-FLAG_outdegree_unweighted = False
+FLAG_outdegree = True
+FLAG_outdegree_unweighted = True
 
-FLAG_indegree = False
-FLAG_indegree_unweighted = False
+FLAG_indegree = True
+FLAG_indegree_unweighted = True
 
 
 

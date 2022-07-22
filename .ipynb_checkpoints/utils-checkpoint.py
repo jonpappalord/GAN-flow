@@ -94,9 +94,9 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 cl1 = list(nx.clustering(G1).values())
                 cl2 = list(nx.clustering(G2).values())
-                cl1 = cl1/np.linalg.norm(cl1)
-                cl2 = cl2/np.linalg.norm(cl2)
-                exp.append(evaluation.rmse(cl1,cl2))
+                rmse = evaluation.rmse(cl1,cl2)
+                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                exp.append(nrmse)
             return exp
 
     elif method == "degree":
@@ -107,9 +107,9 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.degree(weight = "weight")]
                 deg2 = [val for (node, val) in G2.degree(weight = "weight")]
-                deg1 = deg1/np.linalg.norm(deg1)
-                deg2 = deg2/np.linalg.norm(deg2)
-                exp.append(evaluation.rmse(deg1,deg2))
+                rmse = evaluation.rmse(deg1,deg2)
+                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                exp.append(nrmse)
             return exp
 
     elif method == "degree_unweighted":
@@ -120,9 +120,9 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.degree()]
                 deg2 = [val for (node, val) in G2.degree()]
-                deg1 = deg1/np.linalg.norm(deg1)
-                deg2 = deg2/np.linalg.norm(deg2)
-                exp.append(evaluation.rmse(deg1,deg2))
+                rmse = evaluation.rmse(deg1,deg2)
+                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                exp.append(nrmse)
             return exp
 
 
@@ -134,9 +134,9 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.in_degree(weight = "weight")]
                 deg2 = [val for (node, val) in G2.in_degree(weight = "weight")]
-                deg1 = deg1/np.linalg.norm(deg1)
-                deg2 = deg2/np.linalg.norm(deg2)
-                exp.append(evaluation.rmse(deg1,deg2))
+                rmse = evaluation.rmse(deg1,deg2)
+                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                exp.append(nrmse)
             return exp
 
     elif method == "indegree_unweighted":
@@ -147,9 +147,9 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.in_degree()]
                 deg2 = [val for (node, val) in G2.in_degree()]
-                deg1 = deg1/np.linalg.norm(deg1)
-                deg2 = deg2/np.linalg.norm(deg2)
-                exp.append(evaluation.rmse(deg1,deg2))
+                rmse = evaluation.rmse(deg1,deg2)
+                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                exp.append(nrmse)
             return exp
 
     elif method == "outdegree":
@@ -160,9 +160,9 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.out_degree(weight = "weight")]
                 deg2 = [val for (node, val) in G2.out_degree(weight = "weight")]
-                deg1 = deg1/np.linalg.norm(deg1)
-                deg2 = deg2/np.linalg.norm(deg2)
-                exp.append(evaluation.rmse(deg1,deg2))
+                rmse = evaluation.rmse(deg1,deg2)
+                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                exp.append(nrmse)
             return exp
 
     elif method == "outdegree_unweighted":
@@ -173,27 +173,33 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 deg1 = [val for (node, val) in G1.out_degree()]
                 deg2 = [val for (node, val) in G2.out_degree()]
-                deg1 = deg1/np.linalg.norm(deg1)
-                deg2 = deg2/np.linalg.norm(deg2)
-                exp.append(evaluation.rmse(deg1,deg2))
+                rmse = evaluation.rmse(deg1,deg2)
+                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                exp.append(nrmse)
             return exp
 
 
     else:
         if method == "cpc":
             misura =  evaluation.common_part_of_commuters
+            exp=[]
+            for pair in insieme:
+                weights_1 = (pair[0]).flatten()
+                weights_2 = (pair[1]).flatten()
+                m = misura(weights_1, weights_2)
+                exp.append(m)
+            return exp
+            
         elif method == "rmse":
             misura = evaluation.rmse
-        for pair in insieme:
-            weights_1 = (pair[0]).flatten()
-            weights_2 = (pair[1]).flatten()
-            if method =="rmse":
-                weights_1 = weights_1/np.linalg.norm(weights_1)
-                weights_2 = weights_2/np.linalg.norm(weights_2)
-            m = misura(weights_1, weights_2)
-            exp.append(m)
-        return exp
-
+            exp=[]
+            for pair in insieme:
+                weights_1 = (pair[0]).flatten()
+                weights_2 = (pair[1]).flatten()
+                rmse = misura(weights_1, weights_2)
+                nrmse = rmse/(max(np.max(weights_1),np.max(weights_2)) - min(np.min(weights_1), np.min(weights_2)))                
+                exp.append(nrmse)
+            return exp
 
 def get_exp_kernel(insieme, paired = False):
 

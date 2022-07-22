@@ -35,6 +35,8 @@ else:
     transps = [sys.argv[2]]
     if sys.argv[3] == "all":
         models = ["Gravity", "Radiation", "MoGAN"]
+    elif sys.argv[3] == "all+R":
+        models = ["Gravity", "Radiation", "MoGAN", "Random", "Random_Weighted"]
     else:
         models = sys.argv[3:]
 
@@ -44,7 +46,7 @@ print(models)
 FLAG_weights = False
 FLAG_weights_dist = False
 FLAG_cpc = False
-FLAG_rmse = False
+FLAG_rmse = True
 FLAG_cutnorm = False
 
 FLAG_kernel = False
@@ -234,8 +236,8 @@ for model in models:
                 with open("./" + transp+city+"/experiments/topo/"+model+"/3.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_topo_3_sim, fp)
 
-                    
-                    
+
+
             if FLAG_topo_unweighted:
                 start = time.time()
                 exp_topo_unweighted_1_sim = get_exp_measures(v_test, method = "topo_unweighted")
@@ -264,8 +266,8 @@ for model in models:
                 with open("./" + transp+city+"/experiments/topo_unweighted/"+model+"/2.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_topo_unweighted_2_sim, fp)
                 with open("./" + transp+city+"/experiments/topo_unweighted/"+model+"/3.txt", "wb") as fp:   #Pickling
-                    pickle.dump(exp_topo_unweighted_3_sim, fp)      
-                    
+                    pickle.dump(exp_topo_unweighted_3_sim, fp)
+
             if FLAG_degree:
                 start = time.time()
                 exp_degree_1_sim = get_exp_measures(v_test, method = "degree")
@@ -326,7 +328,7 @@ for model in models:
                 with open("./" + transp+city+"/experiments/degree_unweighted/"+model+"/2.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_degree_unweighted_2_sim, fp)
                 with open("./" + transp+city+"/experiments/degree_unweighted/"+model+"/3.txt", "wb") as fp:   #Pickling
-                    pickle.dump(exp_degree_unweighted_3_sim, fp)  
+                    pickle.dump(exp_degree_unweighted_3_sim, fp)
 
 
             if FLAG_indegree:
@@ -389,7 +391,7 @@ for model in models:
                 with open("./" + transp+city+"/experiments/indegree_unweighted/"+model+"/2.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_indegree_unweighted_2_sim, fp)
                 with open("./" + transp+city+"/experiments/indegree_unweighted/"+model+"/3.txt", "wb") as fp:   #Pickling
-                    pickle.dump(exp_indegree_unweighted_3_sim, fp)                      
+                    pickle.dump(exp_indegree_unweighted_3_sim, fp)
 
 
             if FLAG_outdegree:
@@ -452,8 +454,8 @@ for model in models:
                 with open("./" + transp+city+"/experiments/outdegree_unweighted/"+model+"/2.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_outdegree_unweighted_2_sim, fp)
                 with open("./" + transp+city+"/experiments/outdegree_unweighted/"+model+"/3.txt", "wb") as fp:   #Pickling
-                    pickle.dump(exp_outdegree_unweighted_3_sim, fp)  
+                    pickle.dump(exp_outdegree_unweighted_3_sim, fp)
 
-                    
+
 if __name__ == "__main__":
     pass
