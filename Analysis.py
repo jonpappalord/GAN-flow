@@ -46,22 +46,22 @@ print(models)
 FLAG_weights = False
 FLAG_weights_dist = False
 FLAG_cpc = False
-FLAG_rmse = True
+FLAG_rmse = False
 FLAG_cutnorm = False
 
-FLAG_kernel = False
+FLAG_kernel = True
 
 FLAG_topo = False
 FLAG_topo_unweighted = False
 
-FLAG_degree = True
-FLAG_degree_unweighted = True
+FLAG_degree = False
+FLAG_degree_unweighted = False
 
-FLAG_outdegree = True
-FLAG_outdegree_unweighted = True
+FLAG_outdegree = False
+FLAG_outdegree_unweighted = False
 
-FLAG_indegree = True
-FLAG_indegree_unweighted = True
+FLAG_indegree = False
+FLAG_indegree_unweighted = False
 
 
 
@@ -192,7 +192,7 @@ for model in models:
                 print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
-                exp_kernel_3_sim = get_exp_kernel(mixed_set_pairs, paired = True)
+                exp_kernel_3_sim = get_exp_kernel(mixed_set_pairs, True, uno,due)
                 end = time.time()
                 print("exp_kernel_3_sim")
                 elapsed_time = (end-start)/60

@@ -201,7 +201,7 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 exp.append(nrmse)
             return exp
 
-def get_exp_kernel(insieme, paired = False):
+def get_exp_kernel(insieme, paired = False, uno=None, due=None):
 
     if not paired:
         l = []
@@ -224,34 +224,47 @@ def get_exp_kernel(insieme, paired = False):
         print("train")
         K_train = gk.fit_transform(G)
 
-        exp = K_train[np.triu_indices(K_train.shape[0], k=1)]
+        exp = list(K_train[np.triu_indices(K_train.shape[0], k=1)])
 
         return exp
 
     else: #pairwise comparison, take only one value
-        exp = []
-        for pair in tqdm(insieme):
-            l = []
+        l_uno = []
+        l_due = []
+        for A in uno:
+            G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
+            l_uno.append(G)
+        for B in due:
+            G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
+            l_due.append(G)
 
-            G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
-            G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
-            l.append(G1)
-            l.append(G2)
+        for g in l_uno:
+            for n in g.nodes():
+                for i in nx.ego_graph(g,n).nodes():
+                    w = 0
+                    if g.has_edge(n,i):
+                        w = w + g.edges()[(n,i)]["weight"]
+                    g.nodes()[n]["w"] = w
 
-            for g in l:
-                for n in g.nodes():
-                    for i in nx.ego_graph(g,n).nodes():
-                        w = 0
-                        if g.has_edge(n,i):
-                            w = w + g.edges()[(n,i)]["weight"]
-                        g.nodes()[n]["w"] = w
+        for g in l_due:
+            for n in g.nodes():
+                for i in nx.ego_graph(g,n).nodes():
+                    w = 0
+                    if g.has_edge(n,i):
+                        w = w + g.edges()[(n,i)]["weight"]
+                    g.nodes()[n]["w"] = w
 
-            G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
+        l = l_uno + l_due
+        G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
-            gk = kk(normalize = True)
-            K_train = gk.fit_transform(G)
-            sim = K_train[0,1]
-            exp.append(sim)
+        gk = kk(normalize = True)
+        K_train = gk.fit_transform(G)
+
+        h = len(K_train)//2
+        a, b, c, d = K_train[:h, :h], K_train[h:, :h], K_train[:h, h:], K_train[h:, h:]
+
+        exp = list(b.flatten())
+
         return exp
 
 if __name__ == "__main__":
