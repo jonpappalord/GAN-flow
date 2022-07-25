@@ -10,7 +10,8 @@ import skmob
 from skmob.measures import evaluation
 
 from grakel.utils import graph_from_networkx
-from grakel.kernels import OddSth as kk
+#from grakel.kernels import OddSth as kk
+from grakel.kernels import VertexHistogram as kk
 
 import networkx as nx
 from tqdm import tqdm
@@ -95,7 +96,7 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 cl1 = list(nx.clustering(G1).values())
                 cl2 = list(nx.clustering(G2).values())
                 rmse = evaluation.rmse(cl1,cl2)
-                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                nrmse = rmse/(max(np.max(cl1),np.max(cl2)) - min(np.min(cl1), np.min(cl2)))
                 exp.append(nrmse)
             return exp
 
@@ -108,7 +109,7 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 deg1 = [val for (node, val) in G1.degree(weight = "weight")]
                 deg2 = [val for (node, val) in G2.degree(weight = "weight")]
                 rmse = evaluation.rmse(deg1,deg2)
-                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                nrmse = rmse/(max(np.max(deg1),np.max(deg2)) - min(np.min(deg1), np.min(deg2)))
                 exp.append(nrmse)
             return exp
 
@@ -121,7 +122,7 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 deg1 = [val for (node, val) in G1.degree()]
                 deg2 = [val for (node, val) in G2.degree()]
                 rmse = evaluation.rmse(deg1,deg2)
-                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                nrmse = rmse/(max(np.max(deg1),np.max(deg2)) - min(np.min(deg1), np.min(deg2)))
                 exp.append(nrmse)
             return exp
 
@@ -135,7 +136,7 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 deg1 = [val for (node, val) in G1.in_degree(weight = "weight")]
                 deg2 = [val for (node, val) in G2.in_degree(weight = "weight")]
                 rmse = evaluation.rmse(deg1,deg2)
-                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                nrmse = rmse/(max(np.max(deg1),np.max(deg2)) - min(np.min(deg1), np.min(deg2)))
                 exp.append(nrmse)
             return exp
 
@@ -148,7 +149,7 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 deg1 = [val for (node, val) in G1.in_degree()]
                 deg2 = [val for (node, val) in G2.in_degree()]
                 rmse = evaluation.rmse(deg1,deg2)
-                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                nrmse = rmse/(max(np.max(deg1),np.max(deg2)) - min(np.min(deg1), np.min(deg2)))
                 exp.append(nrmse)
             return exp
 
@@ -161,7 +162,7 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 deg1 = [val for (node, val) in G1.out_degree(weight = "weight")]
                 deg2 = [val for (node, val) in G2.out_degree(weight = "weight")]
                 rmse = evaluation.rmse(deg1,deg2)
-                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                nrmse = rmse/(max(np.max(deg1),np.max(deg2)) - min(np.min(deg1), np.min(deg2)))
                 exp.append(nrmse)
             return exp
 
@@ -174,9 +175,22 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 deg1 = [val for (node, val) in G1.out_degree()]
                 deg2 = [val for (node, val) in G2.out_degree()]
                 rmse = evaluation.rmse(deg1,deg2)
-                nrmse = rmse/(max(np.max(fake_set[0]),np.max(fake_set[1])) - min(np.min(fake_set[0]), np.min(fake_set[1])))
+                nrmse = rmse/(max(np.max(deg1),np.max(deg2)) - min(np.min(deg1), np.min(deg2)))
                 exp.append(nrmse)
             return exp
+    
+    elif method == "closeness":
+            exp = []
+
+            for pair in tqdm(insieme):
+                G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
+                G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
+                clo1 = list(nx.closeness_centrality(G1).values())
+                clo2 = list(nx.closeness_centrality(G2).values())
+                rmse = evaluation.rmse(clo1,clo2)
+                nrmse = rmse/(max(np.max(clo1clo1),np.max(clo2)) - min(np.min(clo1), np.min(clo2)))
+                exp.append(nrmse)
+            return exp    
 
 
     else:
@@ -189,7 +203,7 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 m = misura(weights_1, weights_2)
                 exp.append(m)
             return exp
-            
+
         elif method == "rmse":
             misura = evaluation.rmse
             exp=[]
@@ -197,17 +211,18 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 weights_1 = (pair[0]).flatten()
                 weights_2 = (pair[1]).flatten()
                 rmse = misura(weights_1, weights_2)
-                nrmse = rmse/(max(np.max(weights_1),np.max(weights_2)) - min(np.min(weights_1), np.min(weights_2)))                
+                nrmse = rmse/(max(np.max(weights_1),np.max(weights_2)) - min(np.min(weights_1), np.min(weights_2)))
                 exp.append(nrmse)
             return exp
 
-def get_exp_kernel(insieme, paired = False):
+def get_exp_kernel(insieme, paired = False, uno=None, due=None):
 
     if not paired:
         l = []
         for A in insieme:
             G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
             l.append(G)
+
 
         for g in l:
             for n in g.nodes():
@@ -217,41 +232,54 @@ def get_exp_kernel(insieme, paired = False):
                         w = w + g.edges()[(n,i)]["weight"]
                     g.nodes()[n]["w"] = w
 
-        G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
+        G = graph_from_networkx(l, node_labels_tag = "w")
 
 
         gk = kk(normalize = True)
         print("train")
         K_train = gk.fit_transform(G)
 
-        exp = K_train[np.triu_indices(K_train.shape[0], k=1)]
+        exp = list(K_train[np.triu_indices(K_train.shape[0], k=1)])
 
         return exp
 
     else: #pairwise comparison, take only one value
-        exp = []
-        for pair in tqdm(insieme):
-            l = []
+        l_uno = []
+        l_due = []
+        for A in uno:
+            G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
+            l_uno.append(G)
+        for B in due:
+            G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
+            l_due.append(G)
 
-            G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
-            G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
-            l.append(G1)
-            l.append(G2)
+        for g in l_uno:
+            for n in g.nodes():
+                for i in nx.ego_graph(g,n).nodes():
+                    w = 0
+                    if g.has_edge(n,i):
+                        w = w + g.edges()[(n,i)]["weight"]
+                    g.nodes()[n]["w"] = w
 
-            for g in l:
-                for n in g.nodes():
-                    for i in nx.ego_graph(g,n).nodes():
-                        w = 0
-                        if g.has_edge(n,i):
-                            w = w + g.edges()[(n,i)]["weight"]
-                        g.nodes()[n]["w"] = w
+        for g in l_due:
+            for n in g.nodes():
+                for i in nx.ego_graph(g,n).nodes():
+                    w = 0
+                    if g.has_edge(n,i):
+                        w = w + g.edges()[(n,i)]["weight"]
+                    g.nodes()[n]["w"] = w
 
-            G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
+        l = l_uno + l_due
+        G = graph_from_networkx(l,node_labels_tag="w")
 
-            gk = kk(normalize = True)
-            K_train = gk.fit_transform(G)
-            sim = K_train[0,1]
-            exp.append(sim)
+        gk = kk(normalize = True)
+        K_train = gk.fit_transform(G)
+
+        h = len(K_train)//2
+        a, b, c, d = K_train[:h, :h], K_train[h:, :h], K_train[:h, h:], K_train[h:, h:]
+
+        exp = list(b.flatten())
+
         return exp
 
 if __name__ == "__main__":

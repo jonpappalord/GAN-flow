@@ -36,7 +36,7 @@ else:
     if sys.argv[3] == "all":
         models = ["Gravity", "Radiation", "MoGAN"]
     elif sys.argv[3] == "all+R":
-        models = ["Gravity", "Radiation", "MoGAN", "Random", "Random_Weighted"]
+        models = ["Gravity", "Radiation", "MoGAN", "Random_Weighted"]
     else:
         models = sys.argv[3:]
 
@@ -46,7 +46,7 @@ print(models)
 FLAG_weights = False
 FLAG_weights_dist = False
 FLAG_cpc = False
-FLAG_rmse = True
+FLAG_rmse = False
 FLAG_cutnorm = False
 
 FLAG_kernel = False
@@ -54,15 +54,16 @@ FLAG_kernel = False
 FLAG_topo = False
 FLAG_topo_unweighted = False
 
-FLAG_degree = True
-FLAG_degree_unweighted = True
+FLAG_degree = False
+FLAG_degree_unweighted = False
 
-FLAG_outdegree = True
+FLAG_outdegree = False
 FLAG_outdegree_unweighted = True
 
-FLAG_indegree = True
-FLAG_indegree_unweighted = True
+FLAG_indegree = False
+FLAG_indegree_unweighted = False
 
+FLAG_closeness = True
 
 
 
@@ -89,6 +90,9 @@ for model in models:
                 fake_set = pickle.load(fp)
             with open("./" +transp + city +"/v_test.txt", "rb") as fp:   # Unpickling
                 v_test = pickle.load(fp)
+
+            #v_test = v_test[:15]
+            #fake_set = fake_set[:15]
 
             number_of_items = np.floor(len(v_test)/(1.5)).astype(int)
             uno = sample(v_test, number_of_items)
@@ -192,7 +196,7 @@ for model in models:
                 print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
-                exp_kernel_3_sim = get_exp_kernel(mixed_set_pairs, paired = True)
+                exp_kernel_3_sim = get_exp_kernel(mixed_set_pairs, True, uno,due)
                 end = time.time()
                 print("exp_kernel_3_sim")
                 elapsed_time = (end-start)/60
@@ -428,21 +432,21 @@ for model in models:
 
             if FLAG_outdegree_unweighted:
                 start = time.time()
-                exp_outdegree_unweighted_1_sim = get_exp_measures(v_test, method = "outdegree_unweighted")
+                exp_closeness_1_sim = get_exp_measures(v_test, method = "closeness")
                 print("exp_outdegree_unweighted_1_sim")
                 end = time.time()
                 elapsed_time = (end-start)/60
                 print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
-                exp_outdegree_unweighted_2_sim = get_exp_measures(fake_set, method = "outdegree_unweighted")
+                exp_closeness_2_sim = get_exp_measures(fake_set, method = "closeness")
                 print("exp_outdegree_unweighted_2_sim")
                 end = time.time()
                 elapsed_time = (end-start)/60
                 print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
-                exp_outdegree_unweighted_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="outdegree_unweighted")
+                exp_closeness_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="closeness")
                 print("exp_outdegree_unweighted_3_sim")
                 end = time.time()
                 elapsed_time = (end-start)/60
@@ -456,6 +460,39 @@ for model in models:
                 with open("./" + transp+city+"/experiments/outdegree_unweighted/"+model+"/3.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_outdegree_unweighted_3_sim, fp)
 
+                    
+            if FLAG_closeness:
+                start = time.time()
+                exp_closeness_1_sim = get_exp_measures(v_test, method = "closeness")
+                print("exp_closeness_1_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_closeness_2_sim = get_exp_measures(fake_set, method = "closeness")
+                print("exp_closeness_2_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+                start = time.time()
+                exp_closeness_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="closeness")
+                print("exp_closeness_3_sim")
+                end = time.time()
+                elapsed_time = (end-start)/60
+                print("elapsed time in minutes: " + str(elapsed_time))
+
+
+                with open("./" + transp+city+"/experiments/closeness/"+model+"/1.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_closeness_1_sim, fp)
+                with open("./" + transp+city+"/experiments/closeness/"+model+"/2.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_closeness_2_sim, fp)
+                with open("./" + transp+city+"/experiments/closeness/"+model+"/3.txt", "wb") as fp:   #Pickling
+                    pickle.dump(exp_closeness_3_sim, fp)
+
+                    
+                    
 
 if __name__ == "__main__":
     pass

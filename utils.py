@@ -82,9 +82,9 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
                 cl1 = list(nx.clustering(G1,weight='weight').values())
                 cl2 = list(nx.clustering(G2,weight='weight').values())
-                cl1 = cl1/np.linalg.norm(cl1)
-                cl2 = cl2/np.linalg.norm(cl2)
-                exp.append(evaluation.rmse(cl1,cl2))
+                rmse = evaluation.rmse(cl1,cl2)
+                nrmse = rmse/(max(np.max(cl1),np.max(cl2)) - min(np.min(cl1), np.min(cl2)))
+                exp.append(nrmse)
             return exp
 
     elif method == "topo_unweighted":
@@ -179,6 +179,19 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 exp.append(nrmse)
             return exp
 
+    elif method == "closeness":
+            exp = []
+
+            for pair in tqdm(insieme):
+                G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
+                G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
+                clo1 = list(nx.closeness_centrality(G1).values())
+                clo2 = list(nx.closeness_centrality(G2).values())
+                rmse = evaluation.rmse(clo1,clo2)
+                nrmse = rmse/(max(np.max(clo1),np.max(clo2)) - min(np.min(clo1), np.min(clo2)))
+                exp.append(nrmse)
+            return exp
+
 
     else:
         if method == "cpc":
@@ -222,7 +235,7 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
 
-        gk = kk(normalize = True)
+        gk = kk(None, True, False, 0.01)
         print("train")
         K_train = gk.fit_transform(G)
 
@@ -259,7 +272,7 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
         l = l_uno + l_due
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
-        gk = kk(normalize = True)
+        gk = kk(None, True, False, 0.01)
         K_train = gk.fit_transform(G)
 
         h = len(K_train)//2
