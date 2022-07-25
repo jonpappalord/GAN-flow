@@ -49,7 +49,7 @@ FLAG_cpc = False
 FLAG_rmse = False
 FLAG_cutnorm = False
 
-FLAG_kernel = False
+FLAG_kernel = True
 
 FLAG_topo = False
 FLAG_topo_unweighted = False
@@ -58,12 +58,12 @@ FLAG_degree = False
 FLAG_degree_unweighted = False
 
 FLAG_outdegree = False
-FLAG_outdegree_unweighted = True
+FLAG_outdegree_unweighted = False
 
 FLAG_indegree = False
 FLAG_indegree_unweighted = False
 
-FLAG_closeness = True
+FLAG_closeness = False
 
 
 
@@ -432,21 +432,21 @@ for model in models:
 
             if FLAG_outdegree_unweighted:
                 start = time.time()
-                exp_closeness_1_sim = get_exp_measures(v_test, method = "closeness")
+                exp_outdegree_unweighted_1_sim = get_exp_measures(v_test, method = "outdegree_unweighted")
                 print("exp_outdegree_unweighted_1_sim")
                 end = time.time()
                 elapsed_time = (end-start)/60
                 print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
-                exp_closeness_2_sim = get_exp_measures(fake_set, method = "closeness")
+                exp_outdegree_unweighted_2_sim = get_exp_measures(fake_set, method = "outdegree_unweighted")
                 print("exp_outdegree_unweighted_2_sim")
                 end = time.time()
                 elapsed_time = (end-start)/60
                 print("elapsed time in minutes: " + str(elapsed_time))
 
                 start = time.time()
-                exp_closeness_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="closeness")
+                exp_outdegree_unweighted_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="outdegree_unweighted")
                 print("exp_outdegree_unweighted_3_sim")
                 end = time.time()
                 elapsed_time = (end-start)/60
@@ -460,7 +460,7 @@ for model in models:
                 with open("./" + transp+city+"/experiments/outdegree_unweighted/"+model+"/3.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_outdegree_unweighted_3_sim, fp)
 
-                    
+
             if FLAG_closeness:
                 start = time.time()
                 exp_closeness_1_sim = get_exp_measures(v_test, method = "closeness")
@@ -491,8 +491,8 @@ for model in models:
                 with open("./" + transp+city+"/experiments/closeness/"+model+"/3.txt", "wb") as fp:   #Pickling
                     pickle.dump(exp_closeness_3_sim, fp)
 
-                    
-                    
+
+
 
 if __name__ == "__main__":
     pass
