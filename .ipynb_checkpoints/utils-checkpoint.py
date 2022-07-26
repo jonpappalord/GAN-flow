@@ -235,7 +235,7 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
 
-        gk = kk(None, True, False, 0.001)
+        gk = kk(None, True, False, 0.0001)
         print("train")
         K_train = gk.fit_transform(G)
 
@@ -272,7 +272,7 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
         l = l_uno + l_due
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
-        gk = kk(None, True, False, 0.001)
+        gk = kk(None, True, False, 0.0001)
         K_train = gk.fit_transform(G)
 
         h = len(K_train)//2

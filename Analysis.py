@@ -49,9 +49,9 @@ FLAG_cpc = False
 FLAG_rmse = False
 FLAG_cutnorm = False
 
-FLAG_kernel = False
+FLAG_kernel = True
 
-FLAG_topo = True
+FLAG_topo = False
 FLAG_topo_unweighted = False
 
 FLAG_degree = False
