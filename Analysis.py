@@ -49,9 +49,9 @@ FLAG_cpc = False
 FLAG_rmse = False
 FLAG_cutnorm = False
 
-FLAG_kernel = True
+FLAG_kernel = False
 
-FLAG_topo = False
+FLAG_topo = True
 FLAG_topo_unweighted = False
 
 FLAG_degree = False
@@ -211,26 +211,37 @@ for model in models:
                     pickle.dump(exp_kernel_3_sim, fp)
 
             if FLAG_topo:
+                
+                f = open(city+transp+".txt", "a")
                 start = time.time()
                 exp_topo_1_sim = get_exp_measures(v_test, method = "topo")
-                print("exp_topo_1_sim")
+                f.write("exp_topo_1_sim\n")
+                #print("exp_topo_1_sim")
                 end = time.time()
                 elapsed_time = (end-start)/60
-                print("elapsed time in minutes: " + str(elapsed_time))
-
+                #print("elapsed time in minutes: " + str(elapsed_time))
+                f.write("elapsed time in minutes: " + str(elapsed_time)+"\n")
+                
                 start = time.time()
                 exp_topo_2_sim = get_exp_measures(fake_set, method = "topo")
-                print("exp_topo_2_sim")
+                f.write("exp_topo_2_sim\n")
+                #print("exp_topo_2_sim")
                 end = time.time()
                 elapsed_time = (end-start)/60
-                print("elapsed time in minutes: " + str(elapsed_time))
+                #print("elapsed time in minutes: " + str(elapsed_time))
+                f.write("elapsed time in minutes: " + str(elapsed_time)+"\n")
+
 
                 start = time.time()
                 exp_topo_3_sim = get_exp_measures(mixed_set_pairs, paired = True, method="topo")
-                print("exp_topo_3_sim")
+                f.write("exp_topo_3_sim\n")
+                #print("exp_topo_3_sim")
                 end = time.time()
                 elapsed_time = (end-start)/60
-                print("elapsed time in minutes: " + str(elapsed_time))
+                #print("elapsed time in minutes: " + str(elapsed_time))
+                f.write("elapsed time in minutes: " + str(elapsed_time)+"\n")
+
+                f.close()
 
 
                 with open("./" + transp+city+"/experiments/topo/"+model+"/1.txt", "wb") as fp:   #Pickling
