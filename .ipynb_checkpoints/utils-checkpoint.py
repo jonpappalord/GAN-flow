@@ -225,17 +225,14 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
 
 
         for g in l:
-            for n in g.nodes():
-                for i in nx.ego_graph(g,n).nodes():
-                    w = 0
-                    if g.has_edge(n,i):
-                        w = w + g.edges()[(n,i)]["weight"]
-                    g.nodes()[n]["w"] = w
+            w_dict = dict(g.degree(weight = 'weight'))
+            nx.set_node_attributes(g, w_dict, "w")
+            g.nodes(data=True)
 
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
 
-        gk = kk(None, True, False, 0.0001)
+        gk = kk(None, False, False, 0.001)
         print("train")
         K_train = gk.fit_transform(G)
 
@@ -254,25 +251,19 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
             l_due.append(G)
 
         for g in l_uno:
-            for n in g.nodes():
-                for i in nx.ego_graph(g,n).nodes():
-                    w = 0
-                    if g.has_edge(n,i):
-                        w = w + g.edges()[(n,i)]["weight"]
-                    g.nodes()[n]["w"] = w
+            w_dict = dict(g.degree(weight = 'weight'))
+            nx.set_node_attributes(g, w_dict, "w")
+            g.nodes(data=True)
 
         for g in l_due:
-            for n in g.nodes():
-                for i in nx.ego_graph(g,n).nodes():
-                    w = 0
-                    if g.has_edge(n,i):
-                        w = w + g.edges()[(n,i)]["weight"]
-                    g.nodes()[n]["w"] = w
+            w_dict = dict(g.degree(weight = 'weight'))
+            nx.set_node_attributes(g, w_dict, "w")
+            g.nodes(data=True)
 
         l = l_uno + l_due
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
-        gk = kk(None, True, False, 0.0001)
+        gk = kk(None, False, False, 0.001)
         K_train = gk.fit_transform(G)
 
         h = len(K_train)//2
