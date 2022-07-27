@@ -10,8 +10,8 @@ import skmob
 from skmob.measures import evaluation
 
 from grakel.utils import graph_from_networkx
-#from grakel.kernels import OddSth as kk
-from grakel.kernels import RandomWalkLabeled as kk
+from grakel.kernels import OddSth as kk
+#from grakel.kernels import RandomWalkLabeled as kk
 
 import networkx as nx
 from tqdm import tqdm
@@ -232,7 +232,7 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
 
-        gk = kk(None, False, False, 0.0001)
+        gk = kk(normalize = True)
         print("train")
         K_train = gk.fit_transform(G)
 
@@ -263,7 +263,7 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
         l = l_uno + l_due
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
 
-        gk = kk(None, False, False, 0.0001)
+        gk = kk(normalize = True)
         K_train = gk.fit_transform(G)
 
         h = len(K_train)//2
