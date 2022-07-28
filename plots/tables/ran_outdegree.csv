@@ -1,0 +1,5 @@
+,MoGAN1,MoGAN2,Random W1,Random W 2,delta1,delta2
+NYCBike,0.05,0.06,0.25,0.59,82%,89%
+NYCTaxi,0.04,0.11,0.22,0.64,80%,83%
+CHIBike,0.06,0.07,0.25,0.61,77%,89%
+CHITaxi,0.04,0.05,0.22,0.47,82%,89%

@@ -84,7 +84,7 @@ for model in models:
             print("--------")
             print("--------")
             distanze = np.load("./DataLoading/dist_mat_" +city +".npy")
-            np.fill_diagonal(distanze, 0.8)
+            np.fill_diagonal(distanze, 0.01)
 
             with open("./" +transp + city +"/"+table[model], "rb") as fp:   # Unpickling
                 fake_set = pickle.load(fp)

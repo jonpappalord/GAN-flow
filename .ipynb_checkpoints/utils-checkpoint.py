@@ -227,12 +227,10 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
         for g in l:
             w_dict = dict(g.degree(weight = 'weight'))
             nx.set_node_attributes(g, w_dict, "w")
-            g.nodes(data=True)
 
-        G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
+        G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w",edge_weight_tag="weight")
 
-
-        gk = kk(None, False, False, 0.001)
+        gk = kk(normalize = True)
         print("train")
         K_train = gk.fit_transform(G)
 
@@ -240,30 +238,28 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
 
         return exp
 
-    else: #pairwise comparison, take only one value
+    else: 
         l_uno = []
         l_due = []
         for A in uno:
             G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
             l_uno.append(G)
         for B in due:
-            G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
+            G = nx.from_numpy_matrix(np.matrix(B), create_using=nx.DiGraph)
             l_due.append(G)
 
         for g in l_uno:
             w_dict = dict(g.degree(weight = 'weight'))
             nx.set_node_attributes(g, w_dict, "w")
-            g.nodes(data=True)
 
         for g in l_due:
             w_dict = dict(g.degree(weight = 'weight'))
             nx.set_node_attributes(g, w_dict, "w")
-            g.nodes(data=True)
 
         l = l_uno + l_due
-        G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w")
+        G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w",edge_weight_tag="weight")
 
-        gk = kk(None, False, False, 0.001)
+        gk = kk(normalize = True)
         K_train = gk.fit_transform(G)
 
         h = len(K_train)//2

@@ -10,8 +10,8 @@ import skmob
 from skmob.measures import evaluation
 
 from grakel.utils import graph_from_networkx
-from grakel.kernels import EdgeHistogram as kk
-#from grakel.kernels import RandomWalkLabeled as kk
+#from grakel.kernels import OddSth as kk
+from grakel.kernels import RandomWalkLabeled as kk
 
 import networkx as nx
 from tqdm import tqdm
@@ -227,7 +227,6 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
         for g in l:
             w_dict = dict(g.degree(weight = 'weight'))
             nx.set_node_attributes(g, w_dict, "w")
-            g.nodes(data=True)
 
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w",edge_weight_tag="weight")
 
@@ -239,25 +238,23 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
 
         return exp
 
-    else: #pairwise comparison, take only one value
+    else: 
         l_uno = []
         l_due = []
         for A in uno:
             G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
             l_uno.append(G)
         for B in due:
-            G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
+            G = nx.from_numpy_matrix(np.matrix(B), create_using=nx.DiGraph)
             l_due.append(G)
 
         for g in l_uno:
             w_dict = dict(g.degree(weight = 'weight'))
             nx.set_node_attributes(g, w_dict, "w")
-            g.nodes(data=True)
 
         for g in l_due:
             w_dict = dict(g.degree(weight = 'weight'))
             nx.set_node_attributes(g, w_dict, "w")
-            g.nodes(data=True)
 
         l = l_uno + l_due
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w",edge_weight_tag="weight")
