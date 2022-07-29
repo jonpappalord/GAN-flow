@@ -65,9 +65,7 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
 
     if method =="cutnorm":
         k = 0
-        for pair in insieme:
-                if k%100==0:
-                    print(k)
+        for pair in tqdm(insieme):
                 _, cutn_sdp, _ = compute_cutnorm(pair[0], pair[1])
                 exp.append(cutn_sdp)
                 k+=1
@@ -230,7 +228,7 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
 
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w",edge_weight_tag="weight")
 
-        gk = kk(normalize = True)
+        gk = kk(normalize = True, lamda = 0.0001)
         print("train")
         K_train = gk.fit_transform(G)
 
@@ -259,7 +257,7 @@ def get_exp_kernel(insieme, paired = False, uno=None, due=None):
         l = l_uno + l_due
         G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w",edge_weight_tag="weight")
 
-        gk = kk(normalize = True)
+        gk = kk(normalize = True, lamda = 0.0001)
         K_train = gk.fit_transform(G)
 
         h = len(K_train)//2
