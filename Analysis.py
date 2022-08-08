@@ -24,11 +24,7 @@ if len(sys.argv) == 1: #no arguments
     cities = ["CHI", "NYC"]
     transps = ["Bike", "Taxi"]
     models = ["Gravity", "Radiation", "MoGAN", "Random_Weighted"]
-    '''
-    cities = ["CHI"]
-    transps = ["Bike"]
-    models = ["Random"]
-    '''
+
 
 else:
     cities = [sys.argv[1]]
@@ -48,14 +44,9 @@ FLAG_weights_dist = False
 FLAG_cpc = False
 FLAG_rmse = False
 FLAG_cutnorm = True
-
-
 FLAG_topo = False
-
 FLAG_degree = False
-
 FLAG_outdegree = False
-
 FLAG_indegree = False
 
 
