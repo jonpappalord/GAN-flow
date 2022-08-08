@@ -62,16 +62,15 @@ All of the four used dataset are openly available online. Please, if you want to
 
 # Structure of the repository
 In the **main** level of the repo you can find:
-- ```Gravity.py``` and ``` Radiation.py```
-    - These codes execute the two baseline models
+- ```Gravity.py``` , ``` Radiation.py``` and ```Weighted_Random.py```
+    - These codes execute the three baseline models
 - ```MoGAN.py```
     - This script execute the actual MoGAN model
-- ```AnalysisGravity.ipynb ```, ```AnalysisRadiation.ipynb``` and ```AnalysisMoGAN.ipynb``` 
-    - They perform the experimental phases for the three models
-- ```Plots.ipynb``` 
-    - Produces the plots of the experimental phase
-- ```utils.py```
-    - Some utilities function for the plotting phase 
+- ```analysis.py``` 
+    - Performs the experimental phases for the three models, using functions defined in ```utils.py```
+
+The folder ```plots```
+
 
 The folders ```BikeCHI/```, ```BikeNYC/```, ```TaxiCHI/``` and ```TaxiNYC/``` holds the result files of the execution of the three models over the three distinct datasets like the set of synthetic elements (```fake_set.txt```) or the subfolders holding the results of the experimental phase (```experiments/```). The other subfolders content will be explained in next sections.
 
