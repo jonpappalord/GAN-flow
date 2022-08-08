@@ -9,9 +9,6 @@ from cutnorm import compute_cutnorm
 import skmob
 from skmob.measures import evaluation
 
-from grakel.utils import graph_from_networkx
-#from grakel.kernels import OddSth as kk
-from grakel.kernels import RandomWalkLabeled as kk
 
 import networkx as nx
 from tqdm import tqdm
@@ -85,18 +82,6 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 exp.append(nrmse)
             return exp
 
-    elif method == "topo_unweighted":
-            exp = []
-
-            for pair in tqdm(insieme):
-                G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
-                G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
-                cl1 = list(nx.clustering(G1).values())
-                cl2 = list(nx.clustering(G2).values())
-                rmse = evaluation.rmse(cl1,cl2)
-                nrmse = rmse/(max(np.max(cl1),np.max(cl2)) - min(np.min(cl1), np.min(cl2)))
-                exp.append(nrmse)
-            return exp
 
     elif method == "degree":
             exp = []
@@ -111,18 +96,6 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 exp.append(nrmse)
             return exp
 
-    elif method == "degree_unweighted":
-            exp = []
-
-            for pair in tqdm(insieme):
-                G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
-                G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
-                deg1 = [val for (node, val) in G1.degree()]
-                deg2 = [val for (node, val) in G2.degree()]
-                rmse = evaluation.rmse(deg1,deg2)
-                nrmse = rmse/(max(np.max(deg1),np.max(deg2)) - min(np.min(deg1), np.min(deg2)))
-                exp.append(nrmse)
-            return exp
 
 
     elif method == "indegree":
@@ -138,18 +111,6 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 exp.append(nrmse)
             return exp
 
-    elif method == "indegree_unweighted":
-            exp = []
-
-            for pair in tqdm(insieme):
-                G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
-                G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
-                deg1 = [val for (node, val) in G1.in_degree()]
-                deg2 = [val for (node, val) in G2.in_degree()]
-                rmse = evaluation.rmse(deg1,deg2)
-                nrmse = rmse/(max(np.max(deg1),np.max(deg2)) - min(np.min(deg1), np.min(deg2)))
-                exp.append(nrmse)
-            return exp
 
     elif method == "outdegree":
             exp = []
@@ -164,31 +125,6 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 exp.append(nrmse)
             return exp
 
-    elif method == "outdegree_unweighted":
-            exp = []
-
-            for pair in tqdm(insieme):
-                G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
-                G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
-                deg1 = [val for (node, val) in G1.out_degree()]
-                deg2 = [val for (node, val) in G2.out_degree()]
-                rmse = evaluation.rmse(deg1,deg2)
-                nrmse = rmse/(max(np.max(deg1),np.max(deg2)) - min(np.min(deg1), np.min(deg2)))
-                exp.append(nrmse)
-            return exp
-
-    elif method == "closeness":
-            exp = []
-
-            for pair in tqdm(insieme):
-                G1 = nx.from_numpy_matrix(np.matrix(pair[0]), create_using=nx.DiGraph)
-                G2 = nx.from_numpy_matrix(np.matrix(pair[1]), create_using=nx.DiGraph)
-                clo1 = list(nx.closeness_centrality(G1).values())
-                clo2 = list(nx.closeness_centrality(G2).values())
-                rmse = evaluation.rmse(clo1,clo2)
-                nrmse = rmse/(max(np.max(clo1),np.max(clo2)) - min(np.min(clo1), np.min(clo2)))
-                exp.append(nrmse)
-            return exp
 
 
     else:
@@ -213,59 +149,6 @@ def get_exp_measures(lista, paired = False, method = "cutnorm"):
                 exp.append(nrmse)
             return exp
 
-def get_exp_kernel(insieme, paired = False, uno=None, due=None):
-
-    if not paired:
-        l = []
-        for A in insieme:
-            G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
-            l.append(G)
-
-
-        for g in l:
-            w_dict = dict(g.degree(weight = 'weight'))
-            nx.set_node_attributes(g, w_dict, "w")
-
-        G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w",edge_weight_tag="weight")
-
-        gk = kk(normalize = True, lamda = 0.0001)
-        print("train")
-        K_train = gk.fit_transform(G)
-
-        exp = list(K_train[np.triu_indices(K_train.shape[0], k=1)])
-
-        return exp
-
-    else: 
-        l_uno = []
-        l_due = []
-        for A in uno:
-            G = nx.from_numpy_matrix(np.matrix(A), create_using=nx.DiGraph)
-            l_uno.append(G)
-        for B in due:
-            G = nx.from_numpy_matrix(np.matrix(B), create_using=nx.DiGraph)
-            l_due.append(G)
-
-        for g in l_uno:
-            w_dict = dict(g.degree(weight = 'weight'))
-            nx.set_node_attributes(g, w_dict, "w")
-
-        for g in l_due:
-            w_dict = dict(g.degree(weight = 'weight'))
-            nx.set_node_attributes(g, w_dict, "w")
-
-        l = l_uno + l_due
-        G = graph_from_networkx(l,edge_labels_tag="weight", node_labels_tag="w",edge_weight_tag="weight")
-
-        gk = kk(normalize = True, lamda = 0.0001)
-        K_train = gk.fit_transform(G)
-
-        h = len(K_train)//2
-        a, b, c, d = K_train[:h, :h], K_train[h:, :h], K_train[:h, h:], K_train[h:, h:]
-
-        exp = list(b.flatten())
-
-        return exp
 
 if __name__ == "__main__":
     pass

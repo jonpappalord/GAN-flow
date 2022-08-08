@@ -1,6 +1,0 @@
-exp_topo_1_simelapsed time in minutes: 24.897792545954385exp_topo_2_simelapsed time in minutes: 44.27365945180257exp_topo_3_simelapsed time in minutes: 30.57579876979192exp_topo_1_simelapsed time in minutes: 25.099885062376657exp_topo_2_simelapsed time in minutes: 13.5260724067688exp_topo_3_simelapsed time in minutes: 17.330933245023093exp_topo_1_simelapsed time in minutes: 25.027004075050353exp_topo_2_simelapsed time in minutes: 19.44358919064204exp_topo_3_simelapsed time in minutes: 19.65587099790573exp_topo_1_sim
-elapsed time in minutes: 24.965149048964182
-exp_topo_2_sim
-elapsed time in minutes: 23.01373244524002
-exp_topo_3_sim
-elapsed time in minutes: 21.386747161547344
