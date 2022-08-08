@@ -69,7 +69,7 @@ In the **main** level of the repo you can find:
 - ```analysis.py``` 
     - Performs the experimental phases for the three models, using functions defined in ```utils.py```
 
-The folder ```plots```
+The folder ```plots``` contains the pdf plots and the code for creating them in the notebook ```Plots.ipynb``` for the comparison with Gravity and Radiation model and in the notebook ```Plots_Randoms.ipynb``` for the comparison with Random Weighted model. Both notebooks will also calculate the tables of comparison.
 
 
 The folders ```BikeCHI/```, ```BikeNYC/```, ```TaxiCHI/``` and ```TaxiNYC/``` holds the result files of the execution of the three models over the three distinct datasets like the set of synthetic elements (```fake_set.txt```) or the subfolders holding the results of the experimental phase (```experiments/```). The other subfolders content will be explained in next sections.
@@ -89,8 +89,9 @@ These script will train MoGAN or the two baseline models over the pre-calculated
     
 
 # Analysis 
-As reported in the article, we perform a massive experimental phase, implementing a tailored approach for evaluating the realism of the synthetic networks. For easiness of usage, we created three different Jupyter Notebook ( ```AnalysisMoGAN ```,  ``` AnalysisGravity``` and  ```AnalysisRadiation ```), one for each model, for creating, per each model, the distributions of Mixed, Syntetic and Test Set, over the four datasets (see our article for more details). If you want to run these experiments, execute all the cells of the notebooks. Please note that the second cell of the notebook contain two parameter, one specifying the city and one the mean of transport, for selecting the dataset (the syntax is the same as above i.e. CHI/NYC and Bike/Taxi). The results of the Analysis notebook will be stored in the folder of the desired dataset under the subfolder ```experiments/```. For easiness of use, we leave the results file pre-calculated.
-Once one have runned all the Analysis notebooks, with all the 4 combination of data sets, it is possible to run the ```Plots.ipynb``` notebook, that replicate the analysis reported in the article i.e. the weight/weight-distance distribution, and the Cut Norm, CPC and RMSE distribution.
+As reported in the article, we perform a massive experimental phase, implementing a tailored approach for evaluating the realism of the synthetic networks. For easiness of usage, we created the script ```Analysis.py``` for creating, per each model, the distributions of Mixed, Syntetic and Test Set, over the four datasets (see our article for more details). If you run the ```Analysis.py``` without any argument, it will replicate the analysis for all of the models, all of the cities and all of the means of transports. Otherwise, the first argument will be the city ("NYC" or "CHI"), the second the mean of transport ("Bike" or "Taxi") and the third the model ("Gravity", "Radiation", "MoGAN" or "Random_Weighted"). Given the heaviness, in terms of calculation time, of the experiments, you can set to True or False the flag of each metric you want to calculate: FLAG_weights and FLAG_weights_dist will allow the experimets of the weights and weight-distances, FLAG_cpc, FLAG_rmse and FLAG_cutnorm will allow the replication of the calculation of the CPC, RMSE and CD (attention the latter, really heavy), FLAG_topo will allow to calculate the weighted clustering coefficient (the heaviest experiment), while FLAG_degree, FLAG_outdegree and FLAG_indegree will allow to calculate the weighted (in/out) degree.
+For easiness of use, we leave the results file pre-calculated.
+Once one has run all the Analysis notebooks, with all the 4 combination of data sets, it is possible to run the ```Plots.ipynb``` notebook, that replicate the analysis reported in the article i.e. the weight/weight-distance distribution, and the Cut Norm, CPC and RMSE distribution.
 
 
 # DataLoading 
