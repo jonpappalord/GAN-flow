@@ -1,4 +1,4 @@
-# MoGAN - Generating mobility networs with GANs
+# MoGAN - Generating mobility networks with GANs
 ## Table of contents
 1. [Citing](#citing)
 2. [Packages](#packages)
