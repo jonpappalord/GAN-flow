@@ -13,14 +13,18 @@
 In this repository you can find the code for running MoGAN model and to replicate the analysis conducted in our paper.
 If you use the code in this repository, please cite our paper:
 
-*Mauro, G., Luca, M., Longa, A., Lepri, B., & Pappalardo, L. (2022). Generating Synthetic Mobility Networks with Generative Adversarial Networks. arXiv preprint arXiv:2202.11028.*
+*Mauro, G., Luca, M., Longa, A., Lepri, B., & Pappalardo, L. (2022). Generating mobility networks with generative adversarial networks. EPJ data science, 11(1), 58.*
 
 ```
 @article{mauro2022generating,
-  title={Generating Synthetic Mobility Networks with Generative Adversarial Networks},
+  title={Generating mobility networks with generative adversarial networks},
   author={Mauro, Giovanni and Luca, Massimiliano and Longa, Antonio and Lepri, Bruno and Pappalardo, Luca},
-  journal={arXiv preprint arXiv:2202.11028},
-  year={2022}
+  journal={EPJ data science},
+  volume={11},
+  number={1},
+  pages={58},
+  year={2022},
+  publisher={Springer Berlin Heidelberg}
 }
 ```
 
